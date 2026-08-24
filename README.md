@@ -87,11 +87,11 @@ pytest -v
 
 ```bash
 pytest -m smoke          # 13
-pytest -m regression     # 19, только позитивные — это не полный прогон
-pytest -m negative       # 7
-pytest -m ui             # 22
+pytest -m regression     # 18, только позитивные — это не полный прогон
+pytest -m negative       # 8
+pytest -m ui             # 23
 pytest -m cross          # 3
-pytest tests/api         # 14
+pytest tests/api         # 13
 pytest -n 4              # параллельно
 pytest -m ui --headed    # с видимым браузером
 ```

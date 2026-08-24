@@ -101,6 +101,8 @@ def cart_with_product(cart, authenticated_user):
     item_id = cart.add_to_cart(authenticated_user["token"], product_id=1)
     yield {"item_id": item_id, "token": authenticated_user["token"]}
     try:
+        # /deleteitem не проверяет владельца - тем и пользуемся.
+        # Дефект зафиксирован в test_cart_item_cannot_be_deleted_without_owner_token.
         cart.delete_item(item_id)
     except AssertionError:
         # Уборка best-effort: стенд иногда отвечает "Not found."
