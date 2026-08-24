@@ -51,21 +51,27 @@ class CustomRequester:
             attachment_type=allure.attachment_type.TEXT,
         )
 
-    def get(self, endpoint: Endpoint) -> ApiResponse:
+    def get(self, endpoint: Endpoint, expected_status: int = 200) -> ApiResponse:
         response = with_retry(self.session.get, self._url(endpoint), timeout=self.timeout)
         self._log_to_allure(response)
-        assert_status_code(response)
+        assert_status_code(response, expected_status)
         return ApiResponse(
             status=response.status_code,
             body=self._parse(response),
             raw=response,
         )
 
-    def post(self, endpoint: Endpoint, payload: dict | None = None) -> ApiResponse:
+    def post(
+        self,
+        endpoint: Endpoint,
+        payload: dict | None = None,
+        expected_status: int = 200,
+    ) -> ApiResponse:
         response = with_retry(
-            self.session.post, self._url(endpoint), json=payload, timeout=self.timeout)
+            self.session.post, self._url(endpoint), json=payload, timeout=self.timeout
+        )
         self._log_to_allure(response, payload)
-        assert_status_code(response)
+        assert_status_code(response, expected_status)
         return ApiResponse(
             status=response.status_code,
             body=self._parse(response),

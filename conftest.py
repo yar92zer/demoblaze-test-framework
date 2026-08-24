@@ -13,11 +13,8 @@ from pages.login_modal import LoginModal
 from pages.order_modal import OrderModal
 from pages.product_page import ProductPage
 from pages.signup_modal import SignupModal
-from settings import FRONT_URL, TIMEOUT
+from settings import FRONT_URL, UI_TIMEOUT
 from utils.data_generator import DEFAULT_PASSWORD, unique_username
-from utils.encoders import encode_password
-
-UI_TIMEOUT = TIMEOUT * 1000
 
 
 @pytest.fixture
@@ -48,9 +45,9 @@ def header(page):
 @pytest.fixture
 def registered_user(auth):
     username = unique_username()
-    # Фронт гонит пароль через b64EncodeUnicode перед отправкой, поэтому
-    # в базе должен лежать base64, а в форму вводится открытый пароль.
-    auth.signup(username, encode_password(DEFAULT_PASSWORD))
+    # Фронт кодирует пароль сам, AuthService делает то же для API:
+    # в базе должен лежать base64, а в фикстурах и формах - открытый пароль.
+    auth.signup(username, DEFAULT_PASSWORD)
     return {"username": username, "password": DEFAULT_PASSWORD}
 
 

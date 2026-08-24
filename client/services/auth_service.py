@@ -1,20 +1,21 @@
 from client.endpoints import Endpoint
 from client.services.base_service import BaseService
 from utils.assertions import assert_no_error
+from utils.encoders import encode_password
 
 
 class AuthService(BaseService):
     def signup(self, username: str, password: str) -> None:
         response = self.requester.post(
             Endpoint.SIGNUP,
-            payload={"username": username, "password": password},
+            payload={"username": username, "password": encode_password(password)},
         )
         assert_no_error(response.body)
 
     def login(self, username: str, password: str) -> str:
         response = self.requester.post(
             Endpoint.LOGIN,
-            payload={"username": username, "password": password},
+            payload={"username": username, "password": encode_password(password)},
         )
         assert_no_error(response.body)
 

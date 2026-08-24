@@ -9,7 +9,7 @@ pytestmark = [pytest.mark.ui, allure.feature("Оформление заказа"
 @pytest.mark.smoke
 @allure.title("Заказ оформляется и показывает подтверждение")
 def test_purchase_shows_confirmation(
-        logged_in_user, home_page, product_page, cart_page, order_modal
+    logged_in_user, home_page, product_page, cart_page, order_modal
 ):
     home_page.open()
     home_page.open_product("Nexus 6")
@@ -26,7 +26,8 @@ def test_purchase_shows_confirmation(
 @pytest.mark.negative
 @allure.title("Постая форма заказа отклоняется")
 def test_purchase_with_empty_form_rejected(
-        logged_in_user, home_page, product_page, cart_page, order_modal):
+    logged_in_user, home_page, product_page, cart_page, order_modal
+):
     home_page.open()
     home_page.open_product("Nexus 6")
     product_page.add_to_cart()
@@ -40,7 +41,11 @@ def test_purchase_with_empty_form_rejected(
 @pytest.mark.regression
 @allure.title("Подтверждение сдержит имя, карут и сумму заказа")
 def test_confirmation_contains_order_details(
-        logged_in_user, home_page, product_page, cart_page, order_modal,
+    logged_in_user,
+    home_page,
+    product_page,
+    cart_page,
+    order_modal,
 ):
     home_page.open()
     home_page.open_product("Nexus 6")

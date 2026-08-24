@@ -10,9 +10,7 @@ class LoginModal(BasePage):
 
     def wait_open(self) -> None:
         # Дождаться, пока модалка полностью раскроется.
-        self.page.locator(f"{self.MODAL}.show").wait_for(
-            state="visible", timeout=self.timeout
-        )
+        self.page.locator(f"{self.MODAL}.show").wait_for(state="visible", timeout=self.timeout)
 
     def login(self, username: str, password: str) -> None:
         # Заполнить форму и отправить.

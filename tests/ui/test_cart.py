@@ -6,9 +6,7 @@ pytestmark = [pytest.mark.ui, pytest.mark.cart, allure.feature("Корзина U
 
 @pytest.mark.smoke
 @allure.title("Добавленный товар появляется в корзине")
-def test_added_product_appears_in_cart(
-        logged_in_user, home_page, product_page, cart_page
-):
+def test_added_product_appears_in_cart(logged_in_user, home_page, product_page, cart_page):
     home_page.open()
     home_page.open_product("Nexus 6")
     product_page.add_to_cart()
@@ -25,9 +23,7 @@ def test_new_user_cart_is_empty(logged_in_user, cart_page):
 
 @pytest.mark.regression
 @allure.title("Итоговая сумма равна сумме цен товаров")
-def test_total_equals_sum_of_items(
-        logged_in_user, home_page, product_page, cart_page
-):
+def test_total_equals_sum_of_items(logged_in_user, home_page, product_page, cart_page):
     for title in ("Nexus 6", "Samsung galaxy s6"):
         home_page.open()
         home_page.open_product(title)
@@ -39,9 +35,7 @@ def test_total_equals_sum_of_items(
 
 @pytest.mark.regression
 @allure.title("Оба добавленных товара попадают в корзину")
-def test_several_products_in_cart(
-        logged_in_user, home_page, product_page, cart_page
-):
+def test_several_products_in_cart(logged_in_user, home_page, product_page, cart_page):
     expected = {"Nexus 6", "Samsung galaxy s6"}
     for title in expected:
         home_page.open()
@@ -53,9 +47,7 @@ def test_several_products_in_cart(
 
 @pytest.mark.smoke
 @allure.title("Удалённый товар пропадает из корзины")
-def test_delete_product_from_cart(
-        logged_in_user, home_page, product_page, cart_page
-):
+def test_delete_product_from_cart(logged_in_user, home_page, product_page, cart_page):
     home_page.open()
     home_page.open_product("Nexus 6")
     product_page.add_to_cart()

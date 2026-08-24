@@ -20,9 +20,7 @@ def test_signup_new_user(home_page, header, signup_modal):
 def test_signup_existing_user(home_page, header, signup_modal, registered_user):
     home_page.open()
     header.open_signup_modal()
-    message = signup_modal.register(
-        registered_user["username"], registered_user["password"]
-    )
+    message = signup_modal.register(registered_user["username"], registered_user["password"])
     assert message == "This user already exist."
 
 
@@ -50,9 +48,7 @@ def test_logout_returns_to_guest(home_page, header, login_modal, registered_user
 def test_login_wrong_password(home_page, header, login_modal, registered_user):
     home_page.open()
     header.open_login_modal()
-    message = login_modal.login_expecting_alert(
-        registered_user["username"], "definitely_wrong"
-    )
+    message = login_modal.login_expecting_alert(registered_user["username"], "definitely_wrong")
     assert message == "Wrong password."
 
 
@@ -64,10 +60,11 @@ def test_login_unknown_user(home_page, header, login_modal):
     message = login_modal.login_expecting_alert(unique_username(), DEFAULT_PASSWORD)
     assert message == "User does not exist."
 
+
 @pytest.mark.negative
 @allure.title("Вход c пустыми полями отклоняется")
 def test_login_empty_fields(home_page, header, login_modal):
     home_page.open()
     header.open_login_modal()
-    message= login_modal.login_expecting_alert("", DEFAULT_PASSWORD)
+    message = login_modal.login_expecting_alert("", DEFAULT_PASSWORD)
     assert message == "Please fill out Username and Password."

@@ -29,9 +29,7 @@ class HomePage(BasePage):
         self.wait_for_products()
 
     def wait_for_products(self) -> None:
-        self.page.locator(self.PRODUCT_TITLES).first.wait_for(
-            state="visible", timeout=self.timeout
-        )
+        self.page.locator(self.PRODUCT_TITLES).first.wait_for(state="visible", timeout=self.timeout)
 
     def open_category(self, name: str) -> None:
         with self.page.expect_response(self._response_from(self.BYCAT_ENDPOINT)) as caught:

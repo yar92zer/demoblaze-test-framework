@@ -14,7 +14,7 @@ pytestmark = [
 )
 @allure.title("Текст подтверждения одинаков для гостя и авторизованного")
 def test_add_to_cart_alert_is_consistent(
-        home_page, product_page, header, login_modal, registered_user
+    home_page, product_page, header, login_modal, registered_user
 ):
     home_page.open()
     home_page.open_product("Nexus 6")

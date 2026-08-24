@@ -9,8 +9,10 @@ class Product(BaseModel):
     img: str
     desc: str
 
+
 class PageKey(BaseModel):
     id: str
+
 
 class EntriesResponse(BaseModel):
     Items: list[Product]

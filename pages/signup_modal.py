@@ -11,9 +11,7 @@ class SignupModal(BasePage):
 
     def wait_open(self) -> None:
         # Дождаться раскрытия модалки.
-        self.page.locator(f"{self.MODAL}.show").wait_for(
-            state="visible", timeout=self.timeout
-        )
+        self.page.locator(f"{self.MODAL}.show").wait_for(state="visible", timeout=self.timeout)
 
     def register(self, username: str, password: str) -> str:
         # Зарегистрировать пользователя, вернуть текст алерта.
