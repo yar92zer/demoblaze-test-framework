@@ -23,7 +23,28 @@ jobs:
         run: pip install -r requirements.txt
       - name: Lint
         run: ruff check .
+
+  stand:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check demoblaze backend
+        run: |
+          for i in 1 2 3; do
+            count=$(curl -sS --max-time 10 https://api.demoblaze.com/entries \
+                    | jq '.Items | length' 2>/dev/null || echo 0)
+            if [ "$count" -gt 0 ]; then
+              echo "stand ok: $count items"
+              exit 0
+            fi
+            echo "attempt $i: no products, retry in 10s"
+            sleep 10
+          done
+          echo "::error::demoblaze не отдаёт товары — стенд лежит, это не код"
+          exit 1
+
   api:
+    needs: stand
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -44,6 +65,7 @@ jobs:
           path: allure-results
 
   ui:
+    needs: stand
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -73,6 +95,7 @@ jobs:
 
   regression:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: stand
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
