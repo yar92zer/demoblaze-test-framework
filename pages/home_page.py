@@ -1,8 +1,7 @@
+import allure
 from playwright.sync_api import Response
 
 from pages.base_page import BasePage
-
-import allure
 
 
 class HomePage(BasePage):

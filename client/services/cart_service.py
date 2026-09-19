@@ -1,5 +1,7 @@
 import uuid
 
+import allure
+
 from client.endpoints import Endpoint
 from client.models.cart import CartResponse
 from client.services.base_service import BaseService
@@ -7,6 +9,7 @@ from utils.assertions import assert_no_error
 
 
 class CartService(BaseService):
+    @allure.step("API:добавляем товар {product_id} в корзину")
     def add_to_cart(self, token: str, product_id: int) -> str:
         item_id = str(uuid.uuid4())
         response = self.requester.post(
@@ -16,6 +19,7 @@ class CartService(BaseService):
         assert_no_error(response.body)
         return item_id
 
+    @allure.step("API: читаем корзину")
     def view_cart(self, token: str) -> CartResponse:
         response = self.requester.post(
             Endpoint.VIEW_CART,
@@ -24,6 +28,7 @@ class CartService(BaseService):
         assert_no_error(response.body)
         return CartResponse(**response.body)
 
+    @allure.step("API: удаляем позицию {item_id}")
     def delete_item(self, item_id: str) -> str:
         response = self.requester.post(
             Endpoint.DELETE_ITEM,

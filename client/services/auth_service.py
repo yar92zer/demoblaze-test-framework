@@ -1,3 +1,5 @@
+import allure
+
 from client.endpoints import Endpoint
 from client.services.base_service import BaseService
 from utils.assertions import assert_no_error
@@ -5,6 +7,7 @@ from utils.encoders import encode_password
 
 
 class AuthService(BaseService):
+    @allure.step("API: регистрируем {username}")
     def signup(self, username: str, password: str) -> None:
         response = self.requester.post(
             Endpoint.SIGNUP,
@@ -12,6 +15,7 @@ class AuthService(BaseService):
         )
         assert_no_error(response.body)
 
+    @allure.step("API: логинимся под {username}")
     def login(self, username: str, password: str) -> str:
         response = self.requester.post(
             Endpoint.LOGIN,
