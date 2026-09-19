@@ -4,6 +4,8 @@ from playwright.sync_api import Response
 
 from pages.base_page import BasePage
 
+import allure
+
 
 class CartPage(BasePage):
     url_path = "cart.html"
@@ -22,6 +24,7 @@ class CartPage(BasePage):
     TOTAL = "#totalp"
     PLACE_ORDER_BUTTON = "button[data-target='#orderModal']"
 
+    @allure.step("Открываем корзину")
     def open(self, path: str | None = None) -> None:
         with self.page.expect_response(self._response_from(self.VIEWCART_ENDPOINT)) as caught:
             super().open(path)
@@ -33,6 +36,7 @@ class CartPage(BasePage):
     def get_item_prices(self) -> list[int]:
         return [int(text.strip()) for text in self.page.locator(self.ROW_PRICES).all_inner_texts()]
 
+    @allure.step("Читаем итоговую сумму")
     def get_total(self) -> int:
         raw = self.get_text(self.TOTAL).strip()
         return int(raw) if raw else 0
@@ -43,16 +47,16 @@ class CartPage(BasePage):
     def is_empty(self) -> bool:
         return self.get_items_count() == 0
 
+    @allure.step("Удаляем товар {title} из корзины")
     def delete_item(self, title: str) -> None:
         row = self.page.locator(self.ROWS).filter(has_text=title)
         with self.page.expect_response(self._response_from(self.VIEWCART_ENDPOINT)) as caught:
             row.locator("a").click()
         self._wait_until_rendered(caught.value)
 
+    @allure.step("Нажимаем Place Order")
     def place_order(self) -> None:
         self.click(self.PLACE_ORDER_BUTTON)
-
- 
 
     def _wait_until_rendered(self, response: Response) -> None:
         body = response.json()
