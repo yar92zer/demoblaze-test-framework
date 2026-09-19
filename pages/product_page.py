@@ -1,3 +1,4 @@
+import allure
 from pages.base_page import BasePage
 
 
@@ -25,6 +26,7 @@ class ProductPage(BasePage):
         self.wait_for_product()
         return self.get_text(self.DESCRIPTION).strip()
 
+    @allure.step("Добавляем товар в корзину")
     def add_to_cart(self) -> str:
         self.wait_for_product()
         return self.click_expecting_alert(self.ADD_TO_CART_BUTTON)

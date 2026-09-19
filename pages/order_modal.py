@@ -1,3 +1,5 @@
+import allure
+
 from pages.base_page import BasePage
 
 
@@ -24,6 +26,7 @@ class OrderModal(BasePage):
     def get_total(self) -> str:
         return self.get_text(self.TOTAL_LABEL).strip()
 
+    @allure.step("Заполняем форму заказа")
     def fill_order(self, order: dict[str, str]) -> None:
         fields = {
             "name": self.NAME_INPUT,
@@ -39,6 +42,7 @@ class OrderModal(BasePage):
 
     # Одна кнопка даёт два разных диалога: при валидной форме - sweetalert
     # в Dom, при пустой - нативный alert из purchaseOrder(). Отсюда два метода.
+    @allure.step("Подтверждаем покупку")
     def purchase(self) -> None:
         self.click(self.PURCHASE_BUTTON)
         self.wait_visible(self.CONFIRMATION)

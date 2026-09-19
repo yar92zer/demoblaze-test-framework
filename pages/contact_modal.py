@@ -1,3 +1,5 @@
+import allure
+
 from pages.base_page import BasePage
 
 
@@ -14,6 +16,7 @@ class ContactModal(BasePage):
     def wait_opened(self) -> None:
         self.wait_visible(self.EMAIL_INPUT)
 
+    @allure.step("Отправляем сообщение через форму контактов")
     def send_message(self, email: str, name: str, message: str) -> str:
         self.fill(self.EMAIL_INPUT, email)
         self.fill(self.NAME_INPUT, name)

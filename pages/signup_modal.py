@@ -1,3 +1,5 @@
+import allure
+
 from pages.base_page import BasePage
 
 
@@ -13,6 +15,7 @@ class SignupModal(BasePage):
         # Дождаться раскрытия модалки.
         self.page.locator(f"{self.MODAL}.show").wait_for(state="visible", timeout=self.timeout)
 
+    @allure.step("Регистрируем пользователя {username}")
     def register(self, username: str, password: str) -> str:
         # Зарегистрировать пользователя, вернуть текст алерта.
         self.wait_open()

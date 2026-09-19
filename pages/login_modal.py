@@ -1,3 +1,5 @@
+import allure
+
 from pages.base_page import BasePage
 
 
@@ -12,6 +14,7 @@ class LoginModal(BasePage):
         # Дождаться, пока модалка полностью раскроется.
         self.page.locator(f"{self.MODAL}.show").wait_for(state="visible", timeout=self.timeout)
 
+    @allure.step("Логинимся под {username}")
     def login(self, username: str, password: str) -> None:
         # Заполнить форму и отправить.
         self.wait_open()
@@ -19,6 +22,7 @@ class LoginModal(BasePage):
         self.fill(self.PASSWORD_INPUT, password)
         self.click(self.SUBMIT_BUTTON)
 
+    @allure.step("Пробуем войти и ловим алерт")
     def login_expecting_alert(self, username: str, password: str) -> str:
         # Алерт прилетает из AJAX-коллбэка logIn(), поэтому хелпер, а не expect_event.
         self.wait_open()
