@@ -52,12 +52,7 @@ class CartPage(BasePage):
     def place_order(self) -> None:
         self.click(self.PLACE_ORDER_BUTTON)
 
-    @staticmethod
-    def _response_from(endpoint: str) -> Callable[[Response], bool]:
-        def predicate(response: Response) -> bool:
-            return response.request.method == "POST" and response.url.endswith(endpoint)
-
-        return predicate
+ 
 
     def _wait_until_rendered(self, response: Response) -> None:
         body = response.json()

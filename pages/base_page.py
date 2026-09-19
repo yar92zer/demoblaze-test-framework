@@ -1,7 +1,8 @@
 import time
+from collections.abc import Callable
 from urllib.parse import urljoin
 
-from playwright.sync_api import Page
+from playwright.sync_api import Page, Response
 
 
 class BasePage:
@@ -52,3 +53,10 @@ class BasePage:
         if not captured:
             raise AssertionError(f"Диалог не появился после клика по {locator!r}")
         return captured[0]
+
+    @staticmethod
+    def _response_from(endpoint: str) -> Callable[[Response], bool]:
+        def predicate(response: Response) -> bool:
+            return response.request.method == "POST" and response.url.endswith(endpoint)
+
+        return predicate

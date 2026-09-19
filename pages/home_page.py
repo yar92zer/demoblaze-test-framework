@@ -1,5 +1,3 @@
-from collections.abc import Callable
-
 from playwright.sync_api import Response
 
 from pages.base_page import BasePage
@@ -19,10 +17,6 @@ class HomePage(BasePage):
     PRODUCT_PRICES = "#tbodyid .card-block h5"
     NEXT_BUTTON = "#next2"
     PREVIOUS_BUTTON = "#prev2"
-    HOME_LINK = ".navbar-nav a[href='index.html']"
-    CART_LINK = "#cartur"
-    LOGIN_LINK = "#login2"
-    SIGNUP_LINK = "#signin2"
 
     def open(self, path: str | None = None) -> None:
         super().open(path)
@@ -58,13 +52,6 @@ class HomePage(BasePage):
         with self.page.expect_response(self._response_from(self.PAGINATION_ENDPOINT)) as caught:
             self.click(self.PREVIOUS_BUTTON)
         self._wait_until_rendered(caught.value)
-
-    @staticmethod
-    def _response_from(endpoint: str) -> Callable[[Response], bool]:
-        def predicate(response: Response) -> bool:
-            return response.request.method == "POST" and response.url.endswith(endpoint)
-
-        return predicate
 
     def _wait_until_rendered(self, response: Response) -> None:
         expected = [item["title"].strip() for item in response.json().get("Items", [])]
