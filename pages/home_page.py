@@ -2,6 +2,8 @@ from playwright.sync_api import Response
 
 from pages.base_page import BasePage
 
+import allure
+
 
 class HomePage(BasePage):
     url_path = "index.html"
@@ -18,6 +20,7 @@ class HomePage(BasePage):
     NEXT_BUTTON = "#next2"
     PREVIOUS_BUTTON = "#prev2"
 
+    @allure.step("Открываем главную страницу")
     def open(self, path: str | None = None) -> None:
         super().open(path)
         self.wait_for_products()
@@ -25,6 +28,7 @@ class HomePage(BasePage):
     def wait_for_products(self) -> None:
         self.page.locator(self.PRODUCT_TITLES).first.wait_for(state="visible", timeout=self.timeout)
 
+    @allure.step("Переключаемся на категорию {name}")
     def open_category(self, name: str) -> None:
         with self.page.expect_response(self._response_from(self.BYCAT_ENDPOINT)) as caught:
             self.click(self.CATEGORY_BY_NAME.format(name=name))
@@ -39,15 +43,18 @@ class HomePage(BasePage):
     def get_products_count(self) -> int:
         return self.page.locator(self.PRODUCT_CARDS).count()
 
+    @allure.step("Открываем карточку товара {title}")
     def open_product(self, title: str) -> None:
         grid = self.page.locator(self.PRODUCT_GRID)
         grid.get_by_role("link", name=title, exact=True).click()
 
+    @allure.step("Периходим на следующую страницу")
     def go_to_next_page(self) -> None:
         with self.page.expect_response(self._response_from(self.PAGINATION_ENDPOINT)) as caught:
             self.click(self.NEXT_BUTTON)
         self._wait_until_rendered(caught.value)
 
+    @allure.step("Возвращаемся на предыдущую страницу")
     def go_to_previous_page(self) -> None:
         with self.page.expect_response(self._response_from(self.PAGINATION_ENDPOINT)) as caught:
             self.click(self.PREVIOUS_BUTTON)
