@@ -22,8 +22,8 @@ class CartPage(BasePage):
     PLACE_ORDER_BUTTON = "button[data-target='#orderModal']"
 
     @allure.step("Открываем корзину")
-    def open(self, path: str | None = None) -> None:
-        self._act_and_with_render(self.VIEWCART_ENDPOINT, lambda: super(CartPage, self).open(path))
+    def open(self) -> None:
+        self._act_and_with_render(self.VIEWCART_ENDPOINT, lambda: super(CartPage, self).open())
 
     def get_item_titles(self) -> list[str]:
         return [text.strip() for text in self.page.locator(self.ROW_TITLES).all_inner_texts()]
