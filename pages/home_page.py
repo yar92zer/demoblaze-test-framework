@@ -29,9 +29,9 @@ class HomePage(BasePage):
 
     @allure.step("Переключаемся на категорию {name}")
     def open_category(self, name: str) -> None:
-        with self.page.expect_response(self._response_from(self.BYCAT_ENDPOINT)) as caught:
-            self.click(self.CATEGORY_BY_NAME.format(name=name))
-        self._wait_until_rendered(caught.value)
+        self._act_and_with_render(
+            self.BYCAT_ENDPOINT, lambda: self.click(self.CATEGORY_BY_NAME.format(name=name))
+        )
 
     def get_product_titles(self) -> list[str]:
         return [text.strip() for text in self.page.locator(self.PRODUCT_TITLES).all_inner_texts()]
@@ -49,15 +49,11 @@ class HomePage(BasePage):
 
     @allure.step("Периходим на следующую страницу")
     def go_to_next_page(self) -> None:
-        with self.page.expect_response(self._response_from(self.PAGINATION_ENDPOINT)) as caught:
-            self.click(self.NEXT_BUTTON)
-        self._wait_until_rendered(caught.value)
+        self._act_and_with_render(self.PAGINATION_ENDPOINT, lambda: self.click(self.NEXT_BUTTON))
 
     @allure.step("Возвращаемся на предыдущую страницу")
     def go_to_previous_page(self) -> None:
-        with self.page.expect_response(self._response_from(self.PAGINATION_ENDPOINT)) as caught:
-            self.click(self.PREVIOUS_BUTTON)
-        self._wait_until_rendered(caught.value)
+        self._act_and_with_render(self.PAGINATION_ENDPOINT, lambda: self.click(self.NEXT_BUTTON))
 
     def _wait_until_rendered(self, response: Response) -> None:
         expected = [item["title"].strip() for item in response.json().get("Items", [])]

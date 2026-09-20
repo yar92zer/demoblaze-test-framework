@@ -1,4 +1,3 @@
-
 import allure
 from playwright.sync_api import Response
 
@@ -24,9 +23,7 @@ class CartPage(BasePage):
 
     @allure.step("Открываем корзину")
     def open(self, path: str | None = None) -> None:
-        with self.page.expect_response(self._response_from(self.VIEWCART_ENDPOINT)) as caught:
-            super().open(path)
-        self._wait_until_rendered(caught.value)
+        self._act_and_with_render(self.VIEWCART_ENDPOINT, lambda: super(CartPage, self).open(path))
 
     def get_item_titles(self) -> list[str]:
         return [text.strip() for text in self.page.locator(self.ROW_TITLES).all_inner_texts()]
@@ -48,9 +45,7 @@ class CartPage(BasePage):
     @allure.step("Удаляем товар {title} из корзины")
     def delete_item(self, title: str) -> None:
         row = self.page.locator(self.ROWS).filter(has_text=title)
-        with self.page.expect_response(self._response_from(self.VIEWCART_ENDPOINT)) as caught:
-            row.locator("a").click()
-        self._wait_until_rendered(caught.value)
+        self._act_and_with_render(self.VIEWCART_ENDPOINT, lambda: row.locator("a").click())
 
     @allure.step("Нажимаем Place Order")
     def place_order(self) -> None:
