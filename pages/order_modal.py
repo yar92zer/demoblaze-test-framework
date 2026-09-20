@@ -1,9 +1,9 @@
 import allure
 
-from pages.base_page import BasePage
+from pages.base_modal import BaseModal
 
 
-class OrderModal(BasePage):
+class OrderModal(BaseModal):
     MODAL = "#orderModal"
     TOTAL_LABEL = "#orderModal #totalm"
     NAME_INPUT = "#orderModal #name"
@@ -19,9 +19,6 @@ class OrderModal(BasePage):
     CONFIRMATION_TITLE = ".sweet-alert h2"
     CONFIRMATION_TEXT = ".sweet-alert p"
     CONFIRMATION_OK_BUTTON = ".sweet-alert button.confirm"
-
-    def wait_opened(self) -> None:
-        self.wait_visible(self.NAME_INPUT)
 
     def get_total(self) -> str:
         return self.get_text(self.TOTAL_LABEL).strip()
@@ -59,6 +56,3 @@ class OrderModal(BasePage):
     def confirm(self) -> None:
         self.click(self.CONFIRMATION_OK_BUTTON)
         self.page.locator(self.CONFIRMATION).wait_for(state="hidden", timeout=self.timeout)
-
-    def close(self) -> None:
-        self.click(self.CLOSE_BUTTON)

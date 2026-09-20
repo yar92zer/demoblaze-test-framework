@@ -16,7 +16,7 @@ def test_purchase_shows_confirmation(
     product_page.add_to_cart()
     cart_page.open()
     cart_page.place_order()
-    order_modal.wait_opened()
+    order_modal.wait_open()
     order = order_data()
     order_modal.fill_order(order)
     order_modal.purchase()
@@ -33,7 +33,7 @@ def test_purchase_with_empty_form_rejected(
     product_page.add_to_cart()
     cart_page.open()
     cart_page.place_order()
-    order_modal.wait_opened()
+    order_modal.wait_open()
     message = order_modal.purchase_expecting_alert()
     assert message == "Please fill out Name and Creditcard."
 
@@ -54,7 +54,7 @@ def test_confirmation_contains_order_details(
     total = cart_page.get_total()
     cart_page.place_order()
     order = order_data()
-    order_modal.wait_opened()
+    order_modal.wait_open()
     order_modal.fill_order(order)
     order_modal.purchase()
     details = order_modal.get_confirmation_text()

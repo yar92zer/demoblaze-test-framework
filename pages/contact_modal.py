@@ -1,9 +1,9 @@
 import allure
 
-from pages.base_page import BasePage
+from pages.base_modal import BaseModal
 
 
-class ContactModal(BasePage):
+class ContactModal(BaseModal):
     MODAL = "#exampleModal"
     EMAIL_INPUT = "#recipient-email"
     NAME_INPUT = "#recipient-name"
@@ -13,8 +13,6 @@ class ContactModal(BasePage):
     SEND_BUTTON = "#exampleModal button.btn-primary"
     CLOSE_BUTTON = "#exampleModal button.btn-secondary"
 
-    def wait_opened(self) -> None:
-        self.wait_visible(self.EMAIL_INPUT)
 
     @allure.step("Отправляем сообщение через форму контактов")
     def send_message(self, email: str, name: str, message: str) -> str:
@@ -23,5 +21,3 @@ class ContactModal(BasePage):
         self.fill(self.MESSAGE_INPUT, message)
         return self.click_expecting_alert(self.SEND_BUTTON)
 
-    def close(self) -> None:
-        self.click(self.CLOSE_BUTTON)
