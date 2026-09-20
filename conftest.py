@@ -57,8 +57,7 @@ def logged_in_user(page, home_page, header, login_modal, registered_user):
     header.open_login_modal()
     # logIn() в success-колбэке делает location.reload(): без перехвата
     # навигации следующая команда попадёт в уничтоженный контекст.
-    with page.expect_navigation():
-        login_modal.login(registered_user["username"], registered_user["password"])
+    login_modal.login(registered_user["username"], registered_user["password"])
     page.locator(header.USERNAME_LABEL).wait_for(state="visible", timeout=UI_TIMEOUT)
     return registered_user
 

@@ -20,7 +20,10 @@ class LoginModal(BasePage):
         self.wait_open()
         self.fill(self.USERNAME_INPUT, username)
         self.fill(self.PASSWORD_INPUT, password)
-        self.click(self.SUBMIT_BUTTON)
+        # logIn() в success-колбэке делает location.reload(): без перехвата
+        # навигации следующая команда попадёт в уничтоженный контекст.
+        with self.page.expect_navigation():
+            self.click(self.SUBMIT_BUTTON)
 
     @allure.step("Пробуем войти и ловим алерт")
     def login_expecting_alert(self, username: str, password: str) -> str:

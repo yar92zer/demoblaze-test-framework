@@ -22,8 +22,7 @@ def test_add_to_cart_alert_is_consistent(
 
     home_page.open()
     header.open_login_modal()
-    with home_page.page.expect_navigation():
-        login_modal.login(registered_user["username"], registered_user["password"])
+    login_modal.login(registered_user["username"], registered_user["password"])
 
     home_page.open()
     home_page.open_product("Nexus 6")
