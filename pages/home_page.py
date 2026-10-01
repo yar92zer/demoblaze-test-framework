@@ -49,11 +49,13 @@ class HomePage(BasePage):
 
     @allure.step("Периходим на следующую страницу")
     def go_to_next_page(self) -> None:
-        self._act_and_with_render(self.PAGINATION_ENDPOINT, lambda: self.click(self.NEXT_BUTTON))
+        self._act_and_with_render(
+            self.PAGINATION_ENDPOINT, lambda: self.click(self.NEXT_BUTTON))
 
     @allure.step("Возвращаемся на предыдущую страницу")
     def go_to_previous_page(self) -> None:
-        self._act_and_with_render(self.PAGINATION_ENDPOINT, lambda: self.click(self.NEXT_BUTTON))
+        self._act_and_with_render(
+            self.PAGINATION_ENDPOINT, lambda: self.click(self.PREVIOUS_BUTTON))
 
     def _wait_until_rendered(self, response: Response) -> None:
         expected = [item["title"].strip() for item in response.json().get("Items", [])]

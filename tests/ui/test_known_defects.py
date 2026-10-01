@@ -25,3 +25,16 @@ def test_add_to_cart_alert_is_consistent(
     )
     user_message = add_product_to_cart(home_page, product_page, "Nexus 6")
     assert guest_message == user_message
+
+
+@pytest.mark.xfail(
+    reason="Дефект: Previous возвращает набор со сдвигом, один товар подменяется",
+    strict=True,
+)
+@allure.title("Возврат на предыдущию страницу показывает исходные товары")
+def test_previous_page_returns_to_fiest(home_page):
+    home_page.open()
+    first_page = home_page.get_product_titles()
+    home_page.go_to_next_page()
+    home_page.go_to_previous_page()
+    assert home_page.get_product_titles() == first_page
