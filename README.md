@@ -18,16 +18,17 @@ Python 3.11, pytest, requests, Pydantic, Playwright, Allure, pytest-xdist, GitHu
 
 ## Что покрыто
 
-39 тестов:
+40 тестов:
 
 | Слой | Тестов | Домены |
 |---|--------|---|
 | `tests/api/` | 13     | каталог, авторизация, корзина, известные дефекты |
-| `tests/ui/` | 23     | авторизация, каталог, корзина, заказ, контакты, известные дефекты |
+| `tests/ui/` | 24     | авторизация, каталог, корзина, заказ, контакты, известные дефекты |
 | `tests/cross/` | 3      | сквозные API + UI |
 
-Плюс 13 задокументированных дефектов стенда, три из них зафиксированы
-`xfail(strict=True)` — почини стенд, и прогон покраснеет.
+Плюс 13 задокументированных дефектов стенда, четыре из них зафиксированы
+`xfail(strict=True)` — почини стенд, и прогон покраснеет. Четвёртый, добавленный
+последним: Previous в пагинации возвращает набор со сдвигом, один товар подменяется.
 
 ## Структура
 
@@ -51,6 +52,9 @@ demoblaze-test-framework/
 │   ├── signup_modal.py
 │   ├── order_modal.py
 │   └── contact_modal.py
+├── steps/                     сценарии, проходящие через несколько страниц
+│   ├── auth_steps.py          открыть форму входа, войти под пользователем
+│   └── cart_steps.py          добавить товар, открыть корзину с товаром
 ├── utils/
 │   ├── data_generator.py      уникальный логин на каждый тест
 │   ├── assertions.py          assert_no_error, assert_status_code
@@ -70,7 +74,14 @@ demoblaze-test-framework/
 └── .env.example
 ```
 
-API: `CustomRequester → Service → Tests`. UI: `BasePage → Page Object → Tests`.
+API: `CustomRequester → Service → Tests`. UI: `BasePage → Page Object → Steps → Tests`.
+
+Page Object описывает одну страницу и ничего не знает о соседних. Сценарий
+«открыть витрину → карточку товара → добавить в корзину» затрагивает три
+страницы сразу, поэтому живёт в `steps/`: так страницы не импортируют друг
+друга, а повторяющиеся цепочки не копируются по тестам. Каждый шаг помечен
+`@allure.step` и в отчёте читается одной строкой.
+
 `conftest.py` в корне — фикстуры нужны всем трём наборам тестов.
 
 ## Запуск
@@ -87,9 +98,9 @@ pytest -v
 
 ```bash
 pytest -m smoke          # 13
-pytest -m regression     # 18, только позитивные — это не полный прогон
+pytest -m regression     # 19, только позитивные — это не полный прогон
 pytest -m negative       # 8
-pytest -m ui             # 23
+pytest -m ui             # 24
 pytest -m cross          # 3
 pytest tests/api         # 13
 pytest -n 4              # параллельно
