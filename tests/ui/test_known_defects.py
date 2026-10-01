@@ -1,6 +1,9 @@
 import allure
 import pytest
 
+from steps.auth_steps import login_as
+from steps.cart_steps import add_product_to_cart
+
 pytestmark = [
     pytest.mark.ui,
     pytest.mark.regression,
@@ -16,16 +19,9 @@ pytestmark = [
 def test_add_to_cart_alert_is_consistent(
     home_page, product_page, header, login_modal, registered_user
 ):
-    home_page.open()
-    home_page.open_product("Nexus 6")
-    guest_message = product_page.add_to_cart()
-
-    home_page.open()
-    header.open_login_modal()
-    login_modal.login(registered_user["username"], registered_user["password"])
-
-    home_page.open()
-    home_page.open_product("Nexus 6")
-    user_message = product_page.add_to_cart()
-
+    guest_message = add_product_to_cart(home_page, product_page, "Nexus 6")
+    login_as(
+        home_page, header, login_modal, registered_user["username"], registered_user["password"]
+    )
+    user_message = add_product_to_cart(home_page, product_page, "Nexus 6")
     assert guest_message == user_message

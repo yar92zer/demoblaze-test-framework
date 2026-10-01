@@ -1,6 +1,9 @@
 import allure
 import pytest
 
+from steps.auth_steps import login_as
+from steps.cart_steps import add_product_to_cart
+
 pytestmark = [pytest.mark.cross, allure.feature("Сквозные сценарии")]
 
 
@@ -11,7 +14,9 @@ def test_api_added_product_visible_in_ui(
 ):
     token = auth.login(registered_user["username"], registered_user["password"])
     cart.add_to_cart(token, product_id=1)
-    home_page.open()
+    login_as(
+        home_page, header, login_modal, registered_user["username"], registered_user["password"]
+    )
     header.open_login_modal()
     login_modal.login(registered_user["username"], registered_user["password"])
     cart_page.open()
@@ -23,9 +28,7 @@ def test_api_added_product_visible_in_ui(
 def test_ui_added_product_visible_in_api(
     auth, cart, registered_user, home_page, header, product_page, logged_in_user
 ):
-    home_page.open()
-    home_page.open_product("Nexus 6")
-    product_page.add_to_cart()
+    add_product_to_cart(home_page, product_page, "Nexus 6")
     token = auth.login(registered_user["username"], registered_user["password"])
     body = cart.view_cart(token)
     assert [item.prod_id for item in body.Items] == [3]

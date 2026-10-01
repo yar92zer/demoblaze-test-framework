@@ -1,6 +1,7 @@
 import allure
 import pytest
 
+from steps.auth_steps import login_as, open_login_form
 from utils.data_generator import DEFAULT_PASSWORD, unique_username
 
 pytestmark = [pytest.mark.ui, pytest.mark.auth, allure.feature("Авторизация UI")]
@@ -27,18 +28,18 @@ def test_signup_existing_user(home_page, header, signup_modal, registered_user):
 @pytest.mark.smoke
 @allure.title("Вход показывает имя пользователя в шапке")
 def test_login_shows_username(home_page, header, login_modal, registered_user):
-    home_page.open()
-    header.open_login_modal()
-    login_modal.login(registered_user["username"], registered_user["password"])
+    login_as(
+        home_page, header, login_modal, registered_user["username"], registered_user["password"]
+    )
     assert header.get_logged_user() == registered_user["username"]
 
 
 @pytest.mark.regression
 @allure.title("Выход возвращает шапку в состояние гостя")
 def test_logout_returns_to_guest(home_page, header, login_modal, registered_user):
-    home_page.open()
-    header.open_login_modal()
-    login_modal.login(registered_user["username"], registered_user["password"])
+    login_as(
+        home_page, header, login_modal, registered_user["username"], registered_user["password"]
+    )
     header.logout()
     assert not header.is_logged_in()
 
@@ -46,8 +47,7 @@ def test_logout_returns_to_guest(home_page, header, login_modal, registered_user
 @pytest.mark.negative
 @allure.title("Вход с неверным паролем отклоняется")
 def test_login_wrong_password(home_page, header, login_modal, registered_user):
-    home_page.open()
-    header.open_login_modal()
+    open_login_form(home_page, header)
     message = login_modal.login_expecting_alert(registered_user["username"], "definitely_wrong")
     assert message == "Wrong password."
 
@@ -55,8 +55,7 @@ def test_login_wrong_password(home_page, header, login_modal, registered_user):
 @pytest.mark.negative
 @allure.title("Вход несуществующего пользователя отклоняется")
 def test_login_unknown_user(home_page, header, login_modal):
-    home_page.open()
-    header.open_login_modal()
+    open_login_form(home_page, header)
     message = login_modal.login_expecting_alert(unique_username(), DEFAULT_PASSWORD)
     assert message == "User does not exist."
 
@@ -64,7 +63,6 @@ def test_login_unknown_user(home_page, header, login_modal):
 @pytest.mark.negative
 @allure.title("Вход c пустыми полями отклоняется")
 def test_login_empty_fields(home_page, header, login_modal):
-    home_page.open()
-    header.open_login_modal()
+    open_login_form(home_page, header)
     message = login_modal.login_expecting_alert("", DEFAULT_PASSWORD)
     assert message == "Please fill out Username and Password."
