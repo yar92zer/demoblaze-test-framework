@@ -44,6 +44,7 @@ demoblaze-test-framework/
 │   └── models/                Pydantic-валидация: product, cart
 ├── pages/                     Page Object'ы
 │   ├── base_page.py           обёртки над Playwright
+│   ├── base_modal.py          общий базовый класс модалок: wait_open, close
 │   ├── home_page.py           витрина: категории, пагинация, карточки
 │   ├── product_page.py
 │   ├── cart_page.py
@@ -125,3 +126,12 @@ pytest --alluredir=allure-results && allure serve allure-results
 GitHub Actions: `lint` (ruff), `api` и `ui` smoke на каждый push/PR, полный
 `regression` — ночью в 06:00 UTC и по кнопке. Allure-отчёт собирается отдельным
 workflow и публикуется на GitHub Pages.
+
+Перед тестами идёт джоба `stand`: до трёх раз запрашивает `/entries` и падает,
+если стенд не отдаёт товары. От неё зависят `api`, `ui` и `regression`, так что
+лежащий стенд даёт одну понятную ошибку вместо россыпи красных тестов. `lint`
+от стенда не зависит.
+
+На push и PR гоняются только `tests/api` и `tests/ui`. Кросс-тесты (`tests/cross/`)
+туда не попадают, хотя `test_api_added_product_visible_in_ui` помечен `smoke`, —
+они запускаются только в ночном `regression`.
