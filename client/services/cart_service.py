@@ -9,7 +9,7 @@ from utils.assertions import assert_no_error
 
 
 class CartService(BaseService):
-    @allure.step("API:добавляем товар {product_id} в корзину")
+    @allure.step("API: добавляем товар {product_id} в корзину")
     def add_to_cart(self, token: str, product_id: int) -> str:
         item_id = str(uuid.uuid4())
         response = self.requester.post(

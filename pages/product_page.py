@@ -16,7 +16,7 @@ class ProductPage(BasePage):
         self.wait_for_product()
 
     def wait_for_product(self):
-        # Дождаться,пока скрипт нарисует карточку.
+        # Дождаться, пока скрипт нарисует карточку.
         self.wait_visible(self.TITLE)
 
     def get_title(self) -> str:

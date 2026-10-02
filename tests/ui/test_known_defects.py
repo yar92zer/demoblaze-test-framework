@@ -31,8 +31,8 @@ def test_add_to_cart_alert_is_consistent(
     reason="Дефект: Previous возвращает набор со сдвигом, один товар подменяется",
     strict=True,
 )
-@allure.title("Возврат на предыдущию страницу показывает исходные товары")
-def test_previous_page_returns_to_fiest(home_page):
+@allure.title("Возврат на предыдущую страницу показывает исходные товары")
+def test_previous_page_returns_to_first(home_page):
     home_page.open()
     first_page = home_page.get_product_titles()
     home_page.go_to_next_page()

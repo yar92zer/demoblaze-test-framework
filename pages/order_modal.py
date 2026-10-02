@@ -38,7 +38,7 @@ class OrderModal(BaseModal):
                 self.fill(locator, order[key])
 
     # Одна кнопка даёт два разных диалога: при валидной форме - sweetalert
-    # в Dom, при пустой - нативный alert из purchaseOrder(). Отсюда два метода.
+    # в DOM, при пустой - нативный alert из purchaseOrder(). Отсюда два метода.
     @allure.step("Подтверждаем покупку")
     def purchase(self) -> None:
         self.click(self.PURCHASE_BUTTON)

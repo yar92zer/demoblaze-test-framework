@@ -11,7 +11,7 @@ def open_login_form(home_page: HomePage, header: Header) -> None:
     header.open_login_modal()
 
 
-@allure.step("Входим под{username}")
+@allure.step("Входим под {username}")
 def login_as(
     home_page: HomePage, header: Header, login_modal: LoginModal, username: str, password: str
 ) -> None:

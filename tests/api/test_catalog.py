@@ -34,7 +34,7 @@ def test_get_product_by_id(catalog):
 
 
 @pytest.mark.regression
-@allure.title("Ответ катлога содержит ключ плагинации")
+@allure.title("Ответ каталога содержит ключ пагинации")
 def test_entries_has_pagination_key(catalog):
     entries = catalog.get_entries()
     assert entries.LastEvaluatedKey is not None

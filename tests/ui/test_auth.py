@@ -61,7 +61,7 @@ def test_login_unknown_user(home_page, header, login_modal):
 
 
 @pytest.mark.negative
-@allure.title("Вход c пустыми полями отклоняется")
+@allure.title("Вход с пустыми полями отклоняется")
 def test_login_empty_fields(home_page, header, login_modal):
     open_login_form(home_page, header)
     message = login_modal.login_expecting_alert("", DEFAULT_PASSWORD)

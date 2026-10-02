@@ -22,7 +22,7 @@ def test_purchase_shows_confirmation(
 
 
 @pytest.mark.negative
-@allure.title("Постая форма заказа отклоняется")
+@allure.title("Пустая форма заказа отклоняется")
 def test_purchase_with_empty_form_rejected(
     logged_in_user, home_page, product_page, cart_page, order_modal
 ):
@@ -34,7 +34,7 @@ def test_purchase_with_empty_form_rejected(
 
 
 @pytest.mark.regression
-@allure.title("Подтверждение сдержит имя, карут и сумму заказа")
+@allure.title("Подтверждение содержит имя, карту и сумму заказа")
 def test_confirmation_contains_order_details(
     logged_in_user,
     home_page,

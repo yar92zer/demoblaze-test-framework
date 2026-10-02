@@ -47,7 +47,7 @@ class HomePage(BasePage):
         grid = self.page.locator(self.PRODUCT_GRID)
         grid.get_by_role("link", name=title, exact=True).click()
 
-    @allure.step("Периходим на следующую страницу")
+    @allure.step("Переходим на следующую страницу")
     def go_to_next_page(self) -> None:
         self._act_and_with_render(
             self.PAGINATION_ENDPOINT, lambda: self.click(self.NEXT_BUTTON))
