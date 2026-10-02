@@ -10,11 +10,9 @@ class CartPage(BasePage):
     VIEWCART_ENDPOINT = "/viewcart"
 
     # --- таблица позиций ---
-    TABLE_BODY = "#tbodyid"
     ROWS = "#tbodyid tr"
     ROW_TITLES = "#tbodyid tr td:nth-child(2)"
     ROW_PRICES = "#tbodyid tr td:nth-child(3)"
-    DELETE_LINKS = "#tbodyid tr td:nth-child(4) a"
 
     # --- итог и оформление ---
     # У #totalp свой id, у кнопки Place Order — нет, берём по data-target.

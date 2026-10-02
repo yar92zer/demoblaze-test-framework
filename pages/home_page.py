@@ -8,7 +8,6 @@ class HomePage(BasePage):
     url_path = "index.html"
     BYCAT_ENDPOINT = "/bycat"
     PAGINATION_ENDPOINT = "/pagination"
-    CATEGORY_LINKS = "a#itemc"
     # id="itemc" продублирован на всех трёх категориях, поэтому голый
     # #itemc даёт strict mode violation - различаем по тексту.
     CATEGORY_BY_NAME = "a#itemc:text-is('{name}')"

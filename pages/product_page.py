@@ -9,7 +9,6 @@ class ProductPage(BasePage):
     PRICE = "#tbodyid h3.price-container"
     DESCRIPTION = "#more-information p"
     ADD_TO_CART_BUTTON = "#tbodyid a.btn-success"
-    IMAGE = "#imgp img"
 
     def open_by_id(self, product_id: int) -> None:
         self.open(f"{self.url_path}?idp_={product_id}")

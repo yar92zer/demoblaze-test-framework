@@ -7,9 +7,7 @@ class SignupModal(BasePage):
     MODAL = "#signInModal"
     USERNAME_INPUT = "#sign-username"
     PASSWORD_INPUT = "#sign-password"
-    ERROR_LABEL = "#signInModal #errors"
     SUBMIT_BUTTON = "#signInModal button.btn-primary"
-    CLOSE_BUTTON = "#signInModal button.btn-secondary"
 
     def wait_open(self) -> None:
         # Дождаться раскрытия модалки.

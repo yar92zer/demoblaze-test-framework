@@ -12,7 +12,6 @@ class OrderModal(BaseModal):
     CARD_INPUT = "#orderModal #card"
     MONTH_INPUT = "#orderModal #month"
     YEAR_INPUT = "#orderModal #year"
-    ERRORS_LABEL = "#orderModal #errors"
     PURCHASE_BUTTON = "#orderModal button.btn-primary"
     CLOSE_BUTTON = "#orderModal button.btn-secondary"
     CONFIRMATION = ".sweet-alert"

@@ -8,7 +8,6 @@ class LoginModal(BaseModal):
     USERNAME_INPUT = "#loginusername"
     PASSWORD_INPUT = "#loginpassword"
     SUBMIT_BUTTON = "#logInModal button.btn-primary"
-    CLOSE_BUTTON = "#logInModal button.btn-secondary"
 
 
     @allure.step("Логинимся под {username}")
