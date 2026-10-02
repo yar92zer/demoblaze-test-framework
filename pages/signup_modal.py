@@ -8,7 +8,7 @@ class SignupModal(BaseModal):
     USERNAME_INPUT = "#sign-username"
     PASSWORD_INPUT = "#sign-password"
     SUBMIT_BUTTON = "#signInModal button.btn-primary"
-    CLOSE_BUTTON = "#logInModal button.btn-secondary"
+    CLOSE_BUTTON = "#signInModal button.btn-secondary"
 
     @allure.step("Регистрируем пользователя {username}")
     def register(self, username: str, password: str) -> str:
