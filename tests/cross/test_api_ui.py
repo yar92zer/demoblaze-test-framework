@@ -17,8 +17,6 @@ def test_api_added_product_visible_in_ui(
     login_as(
         home_page, header, login_modal, registered_user["username"], registered_user["password"]
     )
-    header.open_login_modal()
-    login_modal.login(registered_user["username"], registered_user["password"])
     cart_page.open()
     assert "Samsung galaxy s6" in cart_page.get_item_titles()
 
