@@ -14,6 +14,7 @@ from pages.order_modal import OrderModal
 from pages.product_page import ProductPage
 from pages.signup_modal import SignupModal
 from settings import FRONT_URL, UI_TIMEOUT
+from steps.auth_steps import login_as
 from utils.data_generator import DEFAULT_PASSWORD, unique_username
 
 
@@ -53,11 +54,9 @@ def registered_user(auth):
 
 @pytest.fixture
 def logged_in_user(page, home_page, header, login_modal, registered_user):
-    home_page.open()
-    header.open_login_modal()
-    # logIn() в success-колбэке делает location.reload(): без перехвата
-    # навигации следующая команда попадёт в уничтоженный контекст.
-    login_modal.login(registered_user["username"], registered_user["password"])
+    login_as(
+        home_page, header, login_modal, registered_user["username"], registered_user["password"]
+    )
     page.locator(header.USERNAME_LABEL).wait_for(state="visible", timeout=UI_TIMEOUT)
     return registered_user
 

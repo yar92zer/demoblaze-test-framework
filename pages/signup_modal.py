@@ -1,17 +1,14 @@
 import allure
 
-from pages.base_page import BasePage
+from pages.base_modal import BaseModal
 
 
-class SignupModal(BasePage):
+class SignupModal(BaseModal):
     MODAL = "#signInModal"
     USERNAME_INPUT = "#sign-username"
     PASSWORD_INPUT = "#sign-password"
     SUBMIT_BUTTON = "#signInModal button.btn-primary"
-
-    def wait_open(self) -> None:
-        # Дождаться раскрытия модалки.
-        self.page.locator(f"{self.MODAL}.show").wait_for(state="visible", timeout=self.timeout)
+    CLOSE_BUTTON = "#logInModal button.btn-secondary"
 
     @allure.step("Регистрируем пользователя {username}")
     def register(self, username: str, password: str) -> str:

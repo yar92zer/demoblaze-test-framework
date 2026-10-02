@@ -12,7 +12,7 @@ pytestmark = [pytest.mark.ui, allure.feature("Оформление заказа"
 def test_purchase_shows_confirmation(
     logged_in_user, home_page, product_page, cart_page, order_modal
 ):
-    open_cart_with_product(home_page,product_page, cart_page,"Nexus 6")
+    open_cart_with_product(home_page, product_page, cart_page, "Nexus 6")
     cart_page.place_order()
     order_modal.wait_open()
     order = order_data()
@@ -26,7 +26,7 @@ def test_purchase_shows_confirmation(
 def test_purchase_with_empty_form_rejected(
     logged_in_user, home_page, product_page, cart_page, order_modal
 ):
-    open_cart_with_product(home_page,product_page, cart_page, "Nexus 6")
+    open_cart_with_product(home_page, product_page, cart_page, "Nexus 6")
     cart_page.place_order()
     order_modal.wait_open()
     message = order_modal.purchase_expecting_alert()
@@ -42,7 +42,7 @@ def test_confirmation_contains_order_details(
     cart_page,
     order_modal,
 ):
-    open_cart_with_product(home_page,product_page, cart_page, "Nexus 6")
+    open_cart_with_product(home_page, product_page, cart_page, "Nexus 6")
     total = cart_page.get_total()
     cart_page.place_order()
     order = order_data()
