@@ -23,6 +23,7 @@ def test_entries_page_size(catalog):
 @allure.title("Фильтр по категории возвращает только товары этой категории")
 def test_by_category_returns_only_that_category(catalog):
     entries = catalog.get_by_category("phone")
+    assert entries.Items, "категория пустая"
     assert all(item.cat == "phone" for item in entries.Items)
 
 

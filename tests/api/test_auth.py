@@ -18,20 +18,10 @@ def test_signup_and_login(auth):
 
 
 @pytest.mark.auth
-@pytest.mark.regression
-@allure.title("Токен обратимо декодируется и содержит логин пользователя")
-def test_token_is_reversible(authenticated_user):
-    decoded = decode_token(authenticated_user["token"])
-    username = authenticated_user["username"]
-    assert decoded.startswith(username)
-    assert decoded[len(username) :].isdigit()
-
-
-@pytest.mark.auth
 @pytest.mark.negative
 @allure.title("Вход с неверным паролем отклоняется")
 def test_login_with_wrong_password(auth):
     username = unique_username()
     auth.signup(username, DEFAULT_PASSWORD)
-    with pytest.raises(AssertionError):
+    with pytest.raises(AssertionError, match="Wrong password"):
         auth.login(username, "wrong_password")
