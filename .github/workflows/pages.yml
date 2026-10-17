@@ -6,9 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
@@ -17,18 +15,28 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != 'cancelled' }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Download allure results
         uses: actions/download-artifact@v4
         with:
-            pattern: allure-results-*
-            merge-multiple: true
-            path: allure-results
-            run-id: ${{ github.event.workflow_run.id }}
-            github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: allure-results-*
+          merge-multiple: true
+          path: allure-results
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore history from gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+        continue-on-error: true
+
+      - name: Copy history into results
+        run: cp -r gh-pages/history allure-results/history || true
 
       - name: Install Allure CLI
         run: |
@@ -38,10 +46,9 @@ jobs:
 
       - name: Generate report
         run: allure generate allure-results --clean -o allure-history
-      - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: allure-history
 
-      - name: Deploy
-        uses: actions/deploy-pages@v4
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-history
