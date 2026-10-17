@@ -18,7 +18,7 @@ Python 3.11, pytest, requests, Pydantic, Playwright, Allure, pytest-xdist, GitHu
 
 ## Что покрыто
 
-40 тестов:
+40 тестов, при живом стенде — 34 passed и 6 xfailed:
 
 | Слой | Тестов | Домены |
 |---|--------|---|
@@ -26,17 +26,17 @@ Python 3.11, pytest, requests, Pydantic, Playwright, Allure, pytest-xdist, GitHu
 | `tests/ui/` | 24     | авторизация, каталог, корзина, заказ, контакты, известные дефекты |
 | `tests/cross/` | 3      | сквозные API + UI |
 
-Плюс 13 задокументированных дефектов стенда, четыре из них зафиксированы
-`xfail(strict=True)` — почини стенд, и прогон покраснеет. Четвёртый, добавленный
-последним: Previous в пагинации возвращает набор со сдвигом, один товар подменяется.
+Плюс 13 задокументированных дефектов стенда, шесть из них зафиксированы
+`xfail(strict=True)` — почини стенд, и прогон покраснеет: №1, №4, №9 в
+`tests/api/test_known_defects.py`, №7, №11, №13 в `tests/ui/test_known_defects.py`.
 
 ## Структура
 
 ```
 demoblaze-test-framework/
 ├── .github/workflows/
-│   ├── ci.yml                 lint + api + ui + nightly regression
-│   └── pages.yml              сборка и публикация Allure на GitHub Pages
+│   ├── ci.yml                 lint + stand + api + ui + nightly regression
+│   └── pages.yml              сборка Allure и деплой в ветку gh-pages
 ├── client/                    API-клиент
 │   ├── custom_requester.py    транспорт: сессия, таймауты, разбор тела, Allure
 │   ├── endpoints.py           пути эндпоинтов одним Enum
@@ -72,7 +72,10 @@ demoblaze-test-framework/
 ├── pytest.ini
 ├── ruff.toml
 ├── requirements.txt
-└── .env.example
+├── .env.example
+├── .gitignore
+├── .gitattributes
+└── README.md
 ```
 
 API: `CustomRequester → Service → Tests`. UI: `BasePage → Page Object → Steps → Tests`.
@@ -124,8 +127,13 @@ pytest --alluredir=allure-results && allure serve allure-results
 ## CI
 
 GitHub Actions: `lint` (ruff), `api` и `ui` smoke на каждый push/PR, полный
-`regression` — ночью в 06:00 UTC и по кнопке. Allure-отчёт собирается отдельным
-workflow и публикуется на GitHub Pages.
+`regression` — ночью в 06:00 UTC и по кнопке.
+
+Allure-отчёт собирает отдельный workflow `pages.yml` после каждого прогона
+`Tests`, в том числе красного, — пропускаются только отменённые. Результаты
+всех джоб сливаются в один отчёт, он деплоится в ветку `gh-pages`, оттуда его
+раздаёт GitHub Pages. Папка `history` из прошлой версии `gh-pages` копируется в
+новые результаты, поэтому в отчёте видны тренды между прогонами.
 
 Перед тестами идёт джоба `stand`: до трёх раз запрашивает `/entries` и падает,
 если стенд не отдаёт товары. От неё зависят `api`, `ui` и `regression`, так что
