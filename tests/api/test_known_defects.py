@@ -41,5 +41,5 @@ def test_token_does_not_reveal_username(authenticated_user):
 )
 @allure.title("Нечисловой id не должен валить бэкенд")
 def test_view_with_non_numeric_id_does_not_crash(requester):
-    response = requester.post(Endpoint.VIEW, payload={"id": "abc"})
+    response = requester.post(Endpoint.VIEW, payload={"id": "abc"}, expected_status=500)
     assert response.status == 200

@@ -46,3 +46,7 @@ class Header(BasePage):
     @allure.step("Ждём появления имени пользователя в шапке")
     def wait_logged_in(self) -> None:
         self.wait_visible(self.USERNAME_LABEL)
+
+    @allure.step("Ждём, пока шапка вернётся в состояние гостя")
+    def wait_logged_out(self)-> None:
+        self.page.locator(self.LOGIN_LINK).wait_for(state="visible", timeout=self.timeout)

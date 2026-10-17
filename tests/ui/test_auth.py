@@ -41,6 +41,7 @@ def test_logout_returns_to_guest(home_page, header, login_modal, registered_user
         home_page, header, login_modal, registered_user["username"], registered_user["password"]
     )
     header.logout()
+    header.wait_logged_out()
     assert not header.is_logged_in()
 
 
@@ -64,5 +65,5 @@ def test_login_unknown_user(home_page, header, login_modal):
 @allure.title("Вход с пустыми полями отклоняется")
 def test_login_empty_fields(home_page, header, login_modal):
     open_login_form(home_page, header)
-    message = login_modal.login_expecting_alert("", DEFAULT_PASSWORD)
+    message = login_modal.login_expecting_alert("", "")
     assert message == "Please fill out Username and Password."
