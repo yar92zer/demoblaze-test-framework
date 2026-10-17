@@ -9,7 +9,6 @@ pytestmark = [pytest.mark.ui, allure.feature("Обратная связь")]
 def test_contact_form_shows_confirmation(home_page, header, contact_modal):
     home_page.open()
     header.open_contact_modal()
-    contact_modal.wait_open()
     message = contact_modal.send_message(
         "qa@example.com", "QA Tester", "Проверка формы обратной связи"
     )

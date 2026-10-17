@@ -15,6 +15,7 @@ class ContactModal(BaseModal):
 
     @allure.step("Отправляем сообщение через форму контактов")
     def send_message(self, email: str, name: str, message: str) -> str:
+        self.wait_open()
         self.fill(self.EMAIL_INPUT, email)
         self.fill(self.NAME_INPUT, name)
         self.fill(self.MESSAGE_INPUT, message)

@@ -51,7 +51,6 @@ def test_previous_page_returns_to_first(home_page):
 def test_contact_form_sends_message_to_backend(page, home_page, header, contact_modal):
     home_page.open()
     header.open_contact_modal()
-    contact_modal.wait_open()
     sent=[]
     page.on("request", lambda r: sent.append(r) if r.method == "POST" else None)
     contact_modal.send_message("qa@example.com", "QA Tester", "Проверка")

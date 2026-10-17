@@ -64,7 +64,7 @@ class BasePage:
     def _wait_until_rendered(self, response: Response) -> None:
         raise NotImplementedError
 
-    def _act_and_with_render(self, endpoint: str, action: Callable[[], None]) -> None:
+    def _act_and_wait_render(self, endpoint: str, action: Callable[[], None]) -> None:
         with self.page.expect_response(self._response_from(endpoint)) as caught:
             action()
         self._wait_until_rendered(caught.value)

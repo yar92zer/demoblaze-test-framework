@@ -21,7 +21,7 @@ class CartPage(BasePage):
 
     @allure.step("Открываем корзину")
     def open(self) -> None:
-        self._act_and_with_render(self.VIEWCART_ENDPOINT, lambda: super(CartPage, self).open())
+        self._act_and_wait_render(self.VIEWCART_ENDPOINT, lambda: super(CartPage, self).open())
 
     def get_item_titles(self) -> list[str]:
         return [text.strip() for text in self.page.locator(self.ROW_TITLES).all_inner_texts()]
@@ -43,7 +43,7 @@ class CartPage(BasePage):
     @allure.step("Удаляем товар {title} из корзины")
     def delete_item(self, title: str) -> None:
         row = self.page.locator(self.ROWS).filter(has_text=title)
-        self._act_and_with_render(self.VIEWCART_ENDPOINT, lambda: row.locator("a").click())
+        self._act_and_wait_render(self.VIEWCART_ENDPOINT, lambda: row.locator("a").click())
 
     @allure.step("Нажимаем Place Order")
     def place_order(self) -> None:
