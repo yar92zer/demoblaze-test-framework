@@ -4,7 +4,6 @@ import pytest
 pytestmark = [pytest.mark.ui, allure.feature("Каталог UI")]
 
 CATALOG_PAGE_SIZE = 9
-PHONE_CATEGORY_SIZE = 7
 
 
 @pytest.mark.smoke
@@ -16,10 +15,11 @@ def test_catalog_shows_products(home_page):
 
 @pytest.mark.regression
 @allure.title("Фильтр по категории показывает только её товары")
-def test_category_filters_products(home_page):
+def test_category_filters_products(home_page, catalog):
+    expected = {item.title.strip() for item in catalog.get_by_category("phone").Items}
     home_page.open()
     home_page.open_category("Phones")
-    assert home_page.get_products_count() == PHONE_CATEGORY_SIZE
+    assert set(home_page.get_product_titles()) == expected
 
 
 @pytest.mark.regression
