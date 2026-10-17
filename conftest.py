@@ -53,11 +53,11 @@ def registered_user(auth):
 
 
 @pytest.fixture
-def logged_in_user(page, home_page, header, login_modal, registered_user):
+def logged_in_user(home_page, header, login_modal, registered_user):
     login_as(
         home_page, header, login_modal, registered_user["username"], registered_user["password"]
     )
-    page.locator(header.USERNAME_LABEL).wait_for(state="visible", timeout=UI_TIMEOUT)
+    header.wait_logged_in()
     return registered_user
 
 

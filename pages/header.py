@@ -1,3 +1,5 @@
+import allure
+
 from pages.base_page import BasePage
 
 
@@ -40,3 +42,7 @@ class Header(BasePage):
     def logout(self) -> None:
         # Выйти. logOut() чистит куку и уводит на index.html.
         self.click(self.LOGOUT_LINK)
+
+    @allure.step("Ждём появления имени пользователя в шапке")
+    def wait_logged_in(self) -> None:
+        self.wait_visible(self.USERNAME_LABEL)
