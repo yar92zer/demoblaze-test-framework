@@ -40,4 +40,3 @@ def test_entries_has_pagination_key(catalog):
     entries = catalog.get_entries()
     assert entries.LastEvaluatedKey is not None
     assert entries.LastEvaluatedKey.id == "9"
-

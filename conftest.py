@@ -77,6 +77,11 @@ def catalog(requester):
 
 
 @pytest.fixture(scope="session")
+def product_titles(catalog):
+    return {item.id: item.title.strip() for item in catalog.get_entries().Items}
+
+
+@pytest.fixture(scope="session")
 def auth(requester):
     return AuthService(requester)
 

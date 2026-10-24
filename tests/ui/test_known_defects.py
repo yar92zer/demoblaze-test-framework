@@ -18,13 +18,13 @@ pytestmark = [
 )
 @allure.title("Текст подтверждения одинаков для гостя и авторизованного")
 def test_add_to_cart_alert_is_consistent(
-    home_page, product_page, header, login_modal, registered_user
+    home_page, product_page, header, login_modal, registered_user, product_titles
 ):
-    guest_message = add_product_to_cart(home_page, product_page, "Nexus 6")
+    guest_message = add_product_to_cart(home_page, product_page, product_titles[3])
     login_as(
         home_page, header, login_modal, registered_user["username"], registered_user["password"]
     )
-    user_message = add_product_to_cart(home_page, product_page, "Nexus 6")
+    user_message = add_product_to_cart(home_page, product_page, product_titles[3])
     assert guest_message == user_message
 
 
@@ -51,8 +51,7 @@ def test_previous_page_returns_to_first(home_page):
 def test_contact_form_sends_message_to_backend(page, home_page, header, contact_modal):
     home_page.open()
     header.open_contact_modal()
-    sent=[]
+    sent = []
     page.on("request", lambda r: sent.append(r) if r.method == "POST" else None)
     contact_modal.send_message("qa@example.com", "QA Tester", "Проверка")
     assert sent, "форма не отправила ни одного POST-запроса"
-

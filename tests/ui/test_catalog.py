@@ -34,10 +34,11 @@ def test_next_page_shows_other_products(home_page):
 
 @pytest.mark.smoke
 @allure.title("Клик по товару открывает его карточку")
-def test_open_product_card(home_page, product_page):
+def test_open_product_card(home_page, product_page, product_titles):
+    title = product_titles[3]
     home_page.open()
-    home_page.open_product("Nexus 6")
-    assert product_page.get_title() == "Nexus 6"
+    home_page.open_product(title)
+    assert product_page.get_title() == title
 
 
 @pytest.mark.regression
