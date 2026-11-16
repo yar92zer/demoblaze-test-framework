@@ -1,1 +1,0 @@
-{'id': '9390134b-2b15-446d-98f8-fe57a05d0ba1', 'cookie': 'cWFfNGE5OWE1NWRiNDJhMTc5NTM0OA==', 'prod_id': 1, 'flag': True}
