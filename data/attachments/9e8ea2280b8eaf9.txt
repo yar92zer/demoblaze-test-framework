@@ -1,1 +1,0 @@
-{'username': 'qa_d07e7a85ab86', 'password': 'd3JvbmdfcGFzc3dvcmQ='}
