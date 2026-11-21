@@ -1,6 +1,7 @@
 import allure
 
 from client.endpoints import Endpoint
+from client.models.auth import CheckResponse
 from client.services.base_service import BaseService
 from utils.assertions import assert_no_error
 from utils.encoders import encode_password
@@ -27,3 +28,12 @@ class AuthService(BaseService):
         if not isinstance(body, str) or ":" not in body:
             raise AssertionError(f"Ожидали строку вида 'Auth_token: <...>', получили: {body!r}")
         return body.split(":", 1)[1].strip()
+
+    @allure.step("API: проверяем токен")
+    def check(self, token: str) -> CheckResponse:
+        response = self.requester.post(
+            Endpoint.CHECK,
+            payload={"token": token},
+        )
+        assert_no_error(response.body)
+        return CheckResponse(**response.body)

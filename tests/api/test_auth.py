@@ -18,6 +18,14 @@ def test_signup_and_login(auth):
 
 
 @pytest.mark.auth
+@pytest.mark.regression
+@allure.title("Проверка валидного токена возвращает его владельца")
+def test_check_returns_token_owner(auth, authenticated_user):
+    body = auth.check(authenticated_user["token"])
+    assert body.Item.username == authenticated_user["username"]
+
+
+@pytest.mark.auth
 @pytest.mark.negative
 @allure.title("Вход с неверным паролем отклоняется")
 def test_login_with_wrong_password(auth):

@@ -18,11 +18,11 @@ Python 3.11, pytest, requests, Pydantic, Playwright, Allure, pytest-xdist, GitHu
 
 ## Что покрыто
 
-40 тестов, при живом стенде — 34 passed и 6 xfailed:
+41 тест, при живом стенде — 35 passed и 6 xfailed:
 
 | Слой | Тестов | Домены |
 |---|--------|---|
-| `tests/api/` | 13     | каталог, авторизация, корзина, известные дефекты |
+| `tests/api/` | 14     | каталог, авторизация, корзина, известные дефекты |
 | `tests/ui/` | 24     | авторизация, каталог, корзина, заказ, контакты, известные дефекты |
 | `tests/cross/` | 3      | сквозные API + UI |
 
@@ -43,7 +43,7 @@ demoblaze-test-framework/
 │   ├── custom_requester.py    транспорт: сессия, таймауты, разбор тела, Allure
 │   ├── endpoints.py           пути эндпоинтов одним Enum
 │   ├── services/              base, auth, cart, catalog
-│   └── models/                Pydantic-валидация: product, cart
+│   └── models/                Pydantic-валидация: product, cart, auth
 ├── pages/                     Page Object'ы
 │   ├── base_page.py           обёртки над Playwright
 │   ├── base_modal.py          общий базовый класс модалок: wait_open, close
@@ -133,11 +133,11 @@ pytest -v
 
 ```bash
 pytest -m smoke          # 13
-pytest -m regression     # 19, только позитивные — это не полный прогон
+pytest -m regression     # 20, только позитивные — это не полный прогон
 pytest -m negative       # 8
 pytest -m ui             # 24
 pytest -m cross          # 3
-pytest tests/api         # 13
+pytest tests/api         # 14
 pytest -n 4              # параллельно
 pytest -m ui --headed    # с видимым браузером
 ```

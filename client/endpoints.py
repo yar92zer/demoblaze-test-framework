@@ -7,6 +7,7 @@ class Endpoint(StrEnum):
     VIEW = "/view"
     SIGNUP = "/signup"
     LOGIN = "/login"
+    CHECK = "/check"
     ADD_TO_CART = "/addtocart"
     VIEW_CART = "/viewcart"
     DELETE_ITEM = "/deleteitem"
