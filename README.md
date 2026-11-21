@@ -34,6 +34,8 @@ Python 3.11, pytest, requests, Pydantic, Playwright, Allure, pytest-xdist, GitHu
 
 ```
 demoblaze-test-framework/
+├── .claude/skills/
+│   └── api-tests/SKILL.md     правила для AI-агента, как писать API-тесты
 ├── .github/workflows/
 │   ├── ci.yml                 lint + stand + api + ui + nightly regression
 │   └── pages.yml              сборка Allure и деплой в ветку gh-pages
@@ -87,6 +89,35 @@ Page Object описывает одну страницу и ничего не з
 `@allure.step` и в отчёте читается одной строкой.
 
 `conftest.py` в корне — фикстуры нужны всем трём наборам тестов.
+
+## AI-скилл для API-тестов
+
+[`.claude/skills/api-tests/SKILL.md`](.claude/skills/api-tests/SKILL.md) —
+скилл Claude Code с правилами, по которым агент пишет и правит тесты в
+`tests/api/`. Агент подгружает его сам, по описанию во frontmatter, когда
+просят добавить или починить API-тест, завести новый эндпоинт в клиенте или
+модель ответа.
+
+Что в нём зафиксировано:
+
+- контракт первичен: если эндпоинта или поля нет в `api-contract.md`, код не
+  пишется, пока они не подтверждены через `probe_demoblaze.py` или ручной запрос;
+- слои `тест → фикстура → сервис → CustomRequester` и порядок добавления
+  эндпоинта: `Endpoint` → метод сервиса с `assert_no_error` → Pydantic-модель;
+- особенности стенда: бизнес-ошибки с кодом 200 и `errorMessage` в теле, тело
+  то `str`, то `dict`, то пустое, 500 с HTML на неверный тип параметра,
+  id позиции корзины генерирует клиент;
+- изоляция на общем стенде: пользователь только из фикстур с префиксом `qa_`,
+  уборка в teardown, ассерты по корзине по своему `item_id`, а не по количеству;
+- оформление: ровно один уровень из `smoke` / `regression` / `negative`,
+  `--strict-markers`, `@allure.title` по-русски, обновление счётчиков в README;
+- известные дефекты: тест на правильное поведение под `xfail(strict=True)`
+  с обязательным `raises`;
+- проверка перед коммитом: `pytest tests/api` и те же `ruff check` /
+  `ruff format --check`, что в CI.
+
+Агент генерирует тест, я ревьюю код и прогоняю его сам. В main попадает только
+то, что прошло ревью.
 
 ## Запуск
 
